@@ -1,0 +1,72 @@
+import { IProductAPI, BillingInfo, Contacts, Order, OrderResponse, Product } from './api';
+
+// Полное описание товара в корзине
+export type BasketItem = {
+    id: string;
+    title: string;
+    price: number | null;
+    quantity: number;
+};
+
+// Возможные типы модальных окон
+export enum AppStateModals {
+  ProductPreview = 'modal:product-preview',
+  Cart = 'modal:cart',
+  PaymentMethod = 'modal:payment-method',
+  ContactInfo = 'modal:contact-info',
+  Success = 'modal:success',
+  None = 'modal:none',
+}
+
+// Возможные изменения состояния приложения
+export enum AppStateChanges {
+  Products = 'change:products',
+  Modal = 'change:modal',
+  SelectedProduct = 'change:selected-product',
+  Cart = 'change:cart',
+  Order = 'change:order',
+}
+
+// Модель данных приложения
+export interface AppState {
+  // Серверные данные
+  products: Map<string, Product>;
+
+  // Пользовательские данные
+  cart: BasketItem[];
+  cartTotal: number;
+  adress: BillingInfo;
+  contacts: Contacts;
+  order: Order;
+  openedModal: AppStateModals;
+
+  // Действия с каталогом
+  loadProducts(): Promise<void>;
+  loadProductDetails(id: string): Promise<void>;
+
+  // Действия покупателя
+  updateBillingInfo(billingInfo: Partial<BillingInfo>): void;
+  updateContacts(contacts: Partial<Contacts>): void;
+  isValidBillingInfo(): boolean;
+  isValidContacts(): boolean;
+  createOrder(): Promise<OrderResponse>;
+
+  // Действия с корзиной
+  addToCart(product: Product): void;
+  removeFromCart(id: string): void;
+  getCartItems(): BasketItem[];
+
+  // Действия с модальными окнами
+  openModal(modal: AppStateModals): void;
+  clearData(): void;
+}
+
+// Настройки модели данных
+export interface AppStateSettings {
+  onChange: (changed: AppStateChanges) => void;
+}
+
+// Конструктор модели данных
+export interface AppStateConstructor {
+  new (api: IProductAPI, settings: AppStateSettings): AppState;
+}
