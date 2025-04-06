@@ -1,4 +1,4 @@
-import { AppStateChanges, AppStateModals, BasketItem } from './appState';
+import { AppStateChanges, AppStateModals } from './appState';
 import { Emitter } from '../base/eventEmitter';
 import { Contacts, Product } from './api';
 
@@ -17,7 +17,7 @@ export interface AppStateEvents {
 	[AppStateChanges.modal]: ModalChange;
 	[AppStateChanges.cart]: {
 		total: number;
-		products: BasketItem[];
+		products: Product[];
 	},
 	[AppStateChanges.products]: Product[];
 	[AppStateChanges.selectedProduct]: Product | null;
