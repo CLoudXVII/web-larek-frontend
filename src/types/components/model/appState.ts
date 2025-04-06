@@ -10,21 +10,21 @@ export type BasketItem = {
 
 // Возможные типы модальных окон
 export enum AppStateModals {
-  ProductPreview = 'modal:product-preview',
-  Cart = 'modal:cart',
-  PaymentMethod = 'modal:payment-method',
-  ContactInfo = 'modal:contact-info',
-  Success = 'modal:success',
-  None = 'modal:none',
+  productPreview = 'modal:product-preview',
+  cart = 'modal:cart',
+  paymentMethod = 'modal:payment-method',
+  contactInfo = 'modal:contact-info',
+  success = 'modal:success',
+  none = 'modal:none',
 }
 
 // Возможные изменения состояния приложения
 export enum AppStateChanges {
-  Products = 'change:products',
-  Modal = 'change:modal',
-  SelectedProduct = 'change:selected-product',
-  Cart = 'change:cart',
-  Order = 'change:order',
+  products = 'change:products',
+  modal = 'change:modal',
+  selectedProduct = 'change:selected-product',
+  cart = 'change:cart',
+  order = 'change:order',
 }
 
 // Модель данных приложения

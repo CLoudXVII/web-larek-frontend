@@ -24,7 +24,7 @@ export interface Contacts extends BillingInfo {
 
 export interface Order extends Contacts {
   total: number;
-  items: string[]; // массив ID продуктов
+  items: string[];
 }
 
 export interface OrderResponse {
