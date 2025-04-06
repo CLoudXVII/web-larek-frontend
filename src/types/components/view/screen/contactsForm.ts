@@ -5,7 +5,7 @@ export interface ContactsFormData {
   isActive: boolean;
 }
 
-export interface BillingFormSettings {
+export interface ContactsFormSettings {
   onChange: (data: ContactsData) => void;
   onClose: () => void;
   onNext: () => void;

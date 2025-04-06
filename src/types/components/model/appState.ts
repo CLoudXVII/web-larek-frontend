@@ -1,13 +1,5 @@
 import { IProductAPI, BillingInfo, Contacts, Order, OrderResponse, Product } from './api';
 
-// Полное описание товара в корзине
-export type BasketItem = {
-    id: string;
-    title: string;
-    price: number | null;
-    quantity: number;
-};
-
 // Возможные типы модальных окон
 export enum AppStateModals {
   productPreview = 'modal:product-preview',
@@ -33,9 +25,9 @@ export interface AppState {
   products: Map<string, Product>;
 
   // Пользовательские данные
-  cart: BasketItem[];
+  cart: Product[];
   cartTotal: number;
-  adress: BillingInfo;
+  address: BillingInfo;
   contacts: Contacts;
   order: Order;
   openedModal: AppStateModals;
@@ -54,7 +46,7 @@ export interface AppState {
   // Действия с корзиной
   addToCart(product: Product): void;
   removeFromCart(id: string): void;
-  getCartItems(): BasketItem[];
+  getCartItems(): Product[];
 
   // Действия с модальными окнами
   openModal(modal: AppStateModals): void;

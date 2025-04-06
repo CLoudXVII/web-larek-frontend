@@ -15,6 +15,6 @@ export interface ProductSettings {
 
   // Для корзины
   delete?: string;
-  compactClasss: string;
+  compactClass: string;
   isCompact: boolean;
 }
