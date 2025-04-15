@@ -13,4 +13,9 @@ export interface CardSettings extends IClickable<CardData> {
   category: string;
   price: string;
   image: string;
+
+  // Для корзины
+  delete?: string;
+  compactClass: string;
+  isCompact: boolean;
 }

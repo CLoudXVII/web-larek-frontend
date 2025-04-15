@@ -1,12 +1,11 @@
-import { ProductData } from "../partial/product";
+import { CardData } from "../partial/card";
 
 export interface CartData {
-  products: ProductData[];
+  products: CardData[];
   total: number;
 }
 
 export interface CartSettings {
-  onRemove: (id: string) => void;
   onClose: () => void;
   onNext: () => void;
 }

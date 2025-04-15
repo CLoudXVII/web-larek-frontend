@@ -14,6 +14,7 @@ export enum AppStateModals {
 export enum AppStateChanges {
   products = 'change:products',
   modal = 'change:modal',
+  modalMessage = 'change:modalMessage',
   selectedProduct = 'change:selected-product',
   cart = 'change:cart',
   order = 'change:order',

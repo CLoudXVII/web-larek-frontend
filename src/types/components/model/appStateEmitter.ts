@@ -22,6 +22,10 @@ export interface AppStateEvents {
 	[AppStateChanges.products]: Product[];
 	[AppStateChanges.selectedProduct]: Product | null;
 	[AppStateChanges.order]: Contacts;
+	[AppStateChanges.modalMessage]: {
+		message: string;
+		isError: boolean;
+	};
 
 	[AppStateModals.productPreview]: never;
 	[AppStateModals.cart]: never;

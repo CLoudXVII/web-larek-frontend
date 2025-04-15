@@ -1,8 +1,8 @@
 import { IClickable } from "../../base/view";
 
 export interface ButtonData {
-  label: string; // Текст на кнопке
-  disabled?: boolean; // Флаг отключения кнопки
+  label: string;
+  disabled?: boolean;
 }
 
 export interface ButtonSettings<T> extends IClickable<T> {}
