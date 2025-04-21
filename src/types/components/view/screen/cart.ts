@@ -1,11 +1,10 @@
-import { CardData } from "../partial/card";
-
-export interface CartData {
-  products: CardData[];
+export interface CartData<C extends HTMLElement> {
+  products: C;
   total: number;
 }
 
 export interface CartSettings {
   onClose: () => void;
   onNext: () => void;
+  renderItems: () => void;
 }

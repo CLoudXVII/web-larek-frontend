@@ -18,4 +18,6 @@ export interface CardSettings extends IClickable<CardData> {
   delete?: string;
   compactClass: string;
   isCompact: boolean;
+
+  onOpenCard: (id: string) => void;
 }

@@ -1,7 +1,5 @@
-import { CartData } from "./cart";
-
 export interface SuccessData {
-	description: CartData;
+	total: number;
 	isActive: boolean;
 }
 
