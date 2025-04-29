@@ -18,7 +18,7 @@ export interface AppStateEvents {
 	[AppStateChanges.cart]: {
 		total: number;
 		products: Product[];
-	},
+	};
 	[AppStateChanges.products]: Product[];
 	[AppStateChanges.selectedProduct]: Product | null;
 	[AppStateChanges.order]: Contacts;
@@ -33,4 +33,6 @@ export interface AppStateEvents {
 	[AppStateModals.contactInfo]: never;
 	[AppStateModals.success]: never;
 	[AppStateModals.none]: never;
+
+	[key: string]: unknown;
 }
