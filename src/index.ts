@@ -9,16 +9,23 @@ import { MainScreen } from './components/view/screen/main';
 import { CardView } from './components/view/partial/card';
 
 import { Product } from './types/components/model/api';
+import { AppStateChanges } from './types/components/model/appState';
+import { AppStateEvents } from './types/components/model/appStateEmitter';
 
-// 1. Инициализация API
+// 1. Инициализация API-клиента и брокера состояния
 const api = new ProductAPI(new Api(API_URL));
-
-// 2. Состояние с событиями
 const state = new AppStateEmitter(api);
 
-// 3. Создание карточки товара
+// 2. Инициализация UI (MainScreen)
+const root = document.querySelector('.page') as HTMLElement;
+const main = new MainScreen(root, {
+	onOpenCart: () => console.log('Открыть корзину'),
+	renderItems: () => {} // не используется напрямую — заменяется событием
+});
+
+// 3. Генерация карточки
 function createCard(product: Product): HTMLElement {
-	const card = new CardView('#card-catalog', {
+	return new CardView('#card-catalog', {
 		title: product.title,
 		category: product.category,
 		price: product.price ? `${product.price} синапсов` : 'Бесценно',
@@ -27,46 +34,28 @@ function createCard(product: Product): HTMLElement {
 		isCompact: false,
 		onClick: () => {
 			state.model.addToCart(product);
-			main.updateCounter(state.model.cart.length);
 		},
-		onOpenCard: (id: string) => {
-			console.log(`Открыть карточку с id=${id}`);
+		onOpenCard: (id) => {
+			console.log(`Открыть карточку ${id}`);
 		}
-	});
-	return card.render(product);
+	}).render(product);
 }
 
+// 4. Подписка на события изменения каталога
+state.on(AppStateChanges.products, (products: Product[]) => {
+	const fragment = document.createDocumentFragment();
+	products.map(createCard).forEach(card => fragment.append(card));
 
-// 4. Получение DOM-элемента и MainScreen
-const root: HTMLElement = document.querySelector('.page')!;
-const main = new MainScreen(root, {
-	onOpenCart: () => console.log('Открыть корзину'),
-	renderItems: () => {
-		const catalog = Array.from(state.model.products.values());
-		const cards = catalog.map(createCard);
-	
-		const fragment = document.createDocumentFragment();
-		cards.forEach(card => fragment.append(card));
-	
-		main.render({
-			counter: state.model.cart.length,
-			cartContent: fragment as unknown as HTMLElement // ⚠ типовой workaround
-		});
-	}	
+	main.render({
+		counter: state.model.cart.length,
+		cartContent: fragment as unknown as HTMLElement
+	});
 });
 
-// 5. Публичный метод обновления счётчика
-main.updateCounter = function (count: number) {
-	this.counterElement.textContent = String(count);
-};
-
-// 6. Подписка на обновление каталога
-state.on('change:products', () => {
-	main['settings'].renderItems();
+// 5. Подписка на изменения корзины (обновление счётчика)
+state.on(AppStateChanges.cart, ({ total, products }) => {
+	main.updateCounter(products.length);
 });
 
-// 7. Запуск загрузки товаров
-console.log('[DEBUG] вызов loadProducts()');
+// 6. Загрузка каталога
 state.model.loadProducts();
-
-

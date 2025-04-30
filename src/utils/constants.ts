@@ -1,6 +1,71 @@
 export const API_URL = `${process.env.API_ORIGIN}/api/weblarek`;
 export const CDN_URL = `${process.env.API_ORIGIN}/content/weblarek`;
 
-export const settings = {
-
+export const SETTINGS = {
+    pageSelector: '.page',
+    pageSettings: {
+        wrapper: '.page__wrapper',
+        counter: '.header__basket-counter',
+        basket: '.header__basket',
+        lockedClass: 'page__wrapper_locked',
+    },
+    cardTemplate: '#card-catalog',
+    cardSettings: {
+        title: '.card__title',
+        category: '.card__category',
+        price: '.card__price',
+        image: '.card__image',
+        compactClass: 'card_compact',
+        delete: '.card__delete',
+    },
+    cardPreviewTemplate: '#card-preview',
+    cardPreviewSettings: {
+        title: '.preview__title',
+        description: '.preview__description',
+        category: '.preview__category',
+        image: '.preview__image',
+        price: '.preview__price',
+        close: '.modal__close',
+        buy: '.preview__button',
+        activeClass: 'modal_active',
+    },
+    mainScreenTemplate: '#main',
+    mainScreenSettings: {
+        gallery: '.gallery',
+        counter: '.header__basket-counter',
+        cartButton: '.header__basket',
+    },
+    cartTemplate: '#basket',
+    cartSettings: {
+        list: '.basket__list',
+        price: '.basket__price',
+        close: '.modal__close',
+        next: '.basket__button',
+    },
+    billingFormTemplate: '#order',
+    billingFormSettings: {
+        address: 'input[name="address"]',
+        paymentButtons: '.order__buttons .button',
+        close: '.modal__close',
+        next: '.order__button',
+        message: '.form__errors',
+        messageErrorClass: 'form__error',
+        activeClass: 'modal_active',
+    },
+    contactsFormTemplate: '#contacts',
+    contactsFormSettings: {
+        email: 'input[name="email"]',
+        phone: 'input[name="phone"]',
+        close: '.modal__close',
+        next: 'button[type="submit"]',
+        message: '.form__errors',
+        messageErrorClass: 'form__error',
+        activeClass: 'modal_active',
+    },
+    successTemplate: '#success',
+    successScreenSettings: {
+        description: '.order-success__description',
+        close: '.order-success__close',
+        activeClass: 'modal_active',
+    },
 };
