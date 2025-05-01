@@ -1,4 +1,5 @@
 import { Form } from '../common/Form';
+import { IUserData } from '../../types';
 import { IEvents } from '../base/Events';
 import { settings } from '../../utils/constants';
 import { ensureAllElements } from '../../utils/utils';
@@ -9,7 +10,6 @@ export class OrderForm extends Form {
 	constructor(container: HTMLElement, events: IEvents) {
 		super(container, events);
 
-		// Получаем кнопки выбора способа оплаты
 		this.paymentButtons = ensureAllElements<HTMLButtonElement>(
 			`${settings.formOrderButton} ${settings.button}`,
 			this.container
@@ -21,52 +21,67 @@ export class OrderForm extends Form {
 			);
 		});
 
-		// Валидация полей ввода
 		this.validateForm();
 	}
 
 	private handlePaymentMethodSelect(event: MouseEvent) {
 		const target = event.target as HTMLButtonElement;
 
-		// Удаляем активное состояние у всех кнопок
 		this.paymentButtons.forEach((button) =>
 			button.classList.remove(settings.formActiveButtonClass)
 		);
 
-		// Устанавливаем активное состояние для выбранной кнопки
 		target.classList.add(settings.formActiveButtonClass);
 
-		// Эмитим событие с выбранным способом оплаты
 		this.events.emit('order:payment-method-selected', { method: target.name });
 
-		// Проверяем валидность формы после выбора способа оплаты
 		this.validateForm();
 	}
 
+	private formErrors: string[] = [];
+
 	protected validateForm() {
 		let isValid = true;
-
-		// Проверяем валидность каждого поля
+		this.formErrors = [];
+	
 		this.inputs.forEach((input) => {
 			if (input.value.trim() === '') {
 				isValid = false;
-				this.showInputError();
+				this.formErrors.push(`Поле "${input.name}" обязательно`);
 			}
 		});
 
-		// Проверяем, выбран ли способ оплаты
 		const activePaymentButton = this.container.querySelector(
 			`${settings.formOrderButton} .${settings.formActiveButtonClass}`
 		);
+	
 		if (!activePaymentButton) {
 			isValid = false;
-			this.setText(this.errorSpan, 'Выберите способ оплаты');
-		} else {
-			this.setText(this.errorSpan, '');
+			this.formErrors.push('Выберите способ оплаты');
 		}
-
+	
+		this.setText(this.errorSpan, this.formErrors.join(', '));
 		this.valid = isValid;
-	}
+	}	
+
+	public setFormData(data: Partial<IUserData>) {
+		if (data.address) {
+			this.inputValues = { address: data.address };
+		}
+	
+		if (data.payment) {
+			const methodName = data.payment === 'online' ? 'card' : 'cash';
+			const button = this.paymentButtons.find(btn => btn.name === methodName);
+			if (button) {
+				this.paymentButtons.forEach(btn =>
+					btn.classList.remove(settings.formActiveButtonClass)
+				);
+				button.classList.add(settings.formActiveButtonClass);
+			}
+		}
+	
+		this.validateForm();
+	}	
 
 	set valid(isValid: boolean) {
 		super.valid = isValid;

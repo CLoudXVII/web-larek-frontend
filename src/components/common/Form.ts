@@ -41,7 +41,6 @@ export class Form extends Modal<IForm> {
 			const field = target.name;
 			const value = target.value;
 
-			// Удаляем ошибку при вводе корректных данных
 			if (value.trim() !== '') {
 				this.hideInputError();
 			}
@@ -82,16 +81,24 @@ export class Form extends Modal<IForm> {
 
 	protected validateForm() {
 		let isValid = true;
-
+		const errors: string[] = [];
+	
 		this.inputs.forEach((input) => {
 			if (input.value.trim() === '') {
 				isValid = false;
-				this.showInputError();
+				errors.push(`Поле "${input.name}" обязательно`);
 			}
 		});
-
+	
+		this.setText(this.errorSpan, errors.join(', '));
 		this.valid = isValid;
 	}
+	
+
+	public setFormData(data: Record<string, string>) {
+		this.inputValues = data;
+		this.validateForm();
+	}	
 
 	set valid(isValid: boolean) {
 		this.submitButton.classList.toggle('disabled', !isValid);

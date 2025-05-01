@@ -3,6 +3,7 @@ export const CDN_URL = `${process.env.API_ORIGIN}/content/weblarek`;
 
 export const settings = {
 	button: '.button',
+	header: '.header',
 
 	cardContainer: '.gallery',
 	cardTemplate: '#card-catalog',

@@ -7,6 +7,7 @@ export class Modal<T> extends Component<T> {
 	protected modal: HTMLElement;
 	protected events: IEvents;
 	protected content: T | null = null;
+	public isOpen = false;
 
 	constructor(container: HTMLElement, events: IEvents) {
 		super(container);
@@ -28,12 +29,14 @@ export class Modal<T> extends Component<T> {
 	open() {
 		this.container.classList.add(settings.modalActiveClass);
 		document.addEventListener('keyup', this.handleEscUp);
+		this.isOpen = true;
 	}
 
 	close() {
 		this.container.classList.remove(settings.modalActiveClass);
 		this.content = null;
 		document.removeEventListener('keyup', this.handleEscUp);
+		this.isOpen = false;
 	}
 
 	handleEscUp(evt: KeyboardEvent) {
