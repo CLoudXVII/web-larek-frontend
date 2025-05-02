@@ -7,13 +7,9 @@ export interface IItem {
 	image: string;
 }
 
-export interface IBasketData {
-	items: [IItem];
+export interface IBasket {
+	items: HTMLElement[];
 	total: number;
-	getTotal(items: [IItem]): number;
-	add(id: string): void;
-	remove(id: string): void;
-	checkItem(id: string): boolean;
 }
 
 export interface IItemData {

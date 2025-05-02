@@ -7,7 +7,7 @@ import { ItemData } from './components/model/ItemData';
 import { EventEmitter } from './components/base/Events';
 import { BasketData } from './components/model/BasketData';
 
-import type { IItem } from './types';
+import type { IBasket, IItem } from './types';
 import { Api } from './components/base/Api';
 
 import { Item } from './components/view/Item';
@@ -40,11 +40,38 @@ const successModal = new Success(ensureElement<HTMLElement>(settings.modalSucces
 const orderForm = new OrderForm(ensureElement<HTMLElement>(settings.modalOrder), events);
 const contactForm = new Form(ensureElement<HTMLElement>(settings.modalContacts), events);
 
+function renderBasket(): IBasket {
+	const items = basketData.getItems();
+
+	const elements = items.map((item, index) => {
+		const element = cloneTemplate<HTMLElement>(settings.basketTemplate);
+		const itemView = new Item(element, events);
+		itemView.render(item);
+
+		const indexEl = ensureElement<HTMLElement>(settings.basketItemIndex, element);
+		indexEl.textContent = (index + 1).toString();
+
+		const removeButton = ensureElement<HTMLButtonElement>(settings.basketItemDelete, element);
+		removeButton.addEventListener('click', (event) => {
+			events.emit('basket:remove-item', { id: item.id });
+			event.stopPropagation();
+		});
+
+		return element;
+	});
+
+	return {
+		items: elements,
+		total: basketData.getTotalPrice(),
+	};
+}
+
+
 function updateBasketUI() {
 	headerView.setBasketCount(basketData.getTotalItems());
 
 	if (basketModal.isOpen) {
-		basketModal.render(basketData.getItems());
+		basketModal.render(renderBasket());
 	}
 }
 
@@ -70,7 +97,7 @@ api.getItems()
 // Слушатели событий
 
 events.on('basket:open', () => {
-	basketModal.render(basketData.getItems());
+	basketModal.render(renderBasket());
 	basketModal.open();
 });
 
